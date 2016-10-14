@@ -10,5 +10,14 @@
     "frontend"
   ],
   "author": "Adam Greenberg <adam.m.t.greenberg@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "react": "^15.3.2",
+    "webpack": "^1.13.2"
+  },
+  "dependencies": {
+    "react-dom": "^15.3.2"
+  }
 }
