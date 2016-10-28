@@ -7,9 +7,13 @@ module.exports = {
     module: {
         loaders: [
             {
-                test: /\.jsx?$/,
-                loader: 'babel-loader',
-                exclude: /node_modules/
+                ttest: /\.jsx?$/,         // Match both .js and .jsx files
+                loader: "babel",
+                exclude: /node_modules/,
+                query:
+                  {
+                    presets:['react']
+                  }
             }
         ]
     }
