@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import ChannelSection from './channels/ChannelSection.jsx';
+import UserSection from './channels/UserSection.jsx';
+import MessageSection from './channels/MessageSection.jsx';
 
 class App extends Component{
   constructor(props){
