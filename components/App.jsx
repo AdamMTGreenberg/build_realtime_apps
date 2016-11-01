@@ -54,6 +54,8 @@ onRemoveUser(removeUser) {
   }
   onConnect() {
     this.setState({connected: true});
+    this.socket.emit('channel subscribe');
+    this.socket.emit('user subscribe');
   }
   onDisconnect() {
     this.setState({connected: false});
@@ -80,7 +82,10 @@ onRemoveUser(removeUser) {
   }
   setChannel(activeChannel) {
     this.setState({activeChannel});
-    // TODO: Get Channels Messages
+    this.socket.emit('message unsubscribe'); // Stop any previous message feeds
+    this.setState({messages: []}); // Remove any messages from the last selected channel
+    this.socket.emit('message subscribe',
+        {channelId: activeChannel.id});
   }
   setUserName(name) {
     this.socket.emit('user edit', {name});
