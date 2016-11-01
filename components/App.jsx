@@ -20,6 +20,23 @@ class App extends Component {
     socket.on('connect', this.onConnect.bind(this));
     socket.on('disconnect', this.onDisconnect.bind(this));
     socket.on('channel add', this.onAddChannel.bind(this));
+    socket.on('user add', this.onAddUser.bind(this));
+    socket.on('user edit', this.onEditUser.bind(this));
+  }
+  onAddUser(user) {
+    let {user} = this.state;
+    users.push(user);
+    this.setState({users});
+  }
+  onEditUser(editUser) {
+    let{users} = this.state;
+    users = users.map(user => {
+        if(editUser.id === user.id) {
+            return editUser;
+        }
+        return userl
+    });
+    this.setState({users});
   }
   onConnect() {
     this.setState({connected: true});
