@@ -72,7 +72,7 @@ onRemoveUser(removeUser) {
   close() {
     this.setState({connected: false});
   }
-  newChannel(channel) {
+  onAddChannel(channel) {
     let {channels} = this.state;
     channels.push(channel);
     this.setState({channels});
