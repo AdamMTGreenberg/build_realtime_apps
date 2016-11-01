@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import ChannelSection from './channels/ChannelSection.jsx';
 import UserSection from './channels/UserSection.jsx';
 import MessageSection from './channels/MessageSection.jsx';
+import Socket from '../socket.js '
 
-class App extends Component{
+class App extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -14,11 +15,17 @@ class App extends Component{
       connected: false
     };
   }
-  componentDidMount(){
-    let ws = this.ws = new WebSocket('ws://echo.websocket.org');
-    // ws.onmessage = this.message.bind(this);
-    // ws.onopen = this.open.bind(this);
-    // ws,onclose = this.close.bind(this);
+  componentDidMount() {
+    let socket = this.socket = new Socket();
+    socket.on('connect', this.onConnect.bind(this));
+    socket.on('disconnect', this.onDisconnect.bind(this));
+    socket.on('channel add', this.onAddChannel.bind(this));
+  }
+  onConnect() {
+    this.setState({connected: true});
+  }
+  onDisconnect() {
+    this.setState({connected: false});
   }
   message(e) {
     const event = JSON.parse(e.data);
@@ -29,7 +36,7 @@ class App extends Component{
   open() {
     this.setState({connected: true});
   }
-  close(){
+  close() {
     this.setState({connected: false});
   }
   newChannel(channel) {
@@ -37,21 +44,10 @@ class App extends Component{
     channels.push(channel);
     this.setState({channels});
   }
-  addChannel(name){
-    let {channels} = this.state;
-    // channels.push({id: channels.length, name});
-    // this.setState({channels});
-    // TODO: Send to server
-    let msg = {
-        name: 'channel add',
-        data: {
-            id: channels.length,
-            name
-        }
-     }
-    this.ws.send(JSON.stringify(msg));
+  addChannel(name) {
+   this.socket.emit('channel add', {name});
   }
-  setChannel(activeChannel){
+  setChannel(activeChannel) {
     this.setState({activeChannel});
     // TODO: Get Channels Messages
   }
