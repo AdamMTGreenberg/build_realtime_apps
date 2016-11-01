@@ -22,7 +22,21 @@ class App extends Component {
     socket.on('channel add', this.onAddChannel.bind(this));
     socket.on('user add', this.onAddUser.bind(this));
     socket.on('user edit', this.onEditUser.bind(this));
+    socket.on('user remove', this.onRemoveUser.bind(this));
+    socket.on('message add', this.onMessageAdd.bind(this));
   }
+  onMessageAdd(message) {
+    let {messages} = this.state;
+    messages.push(message);
+    this.setState({messages});
+  }
+onRemoveUser(removeUser) {
+    let {users} = this.state;
+    users = users.filter(user => {
+        return user.id !== removeUser.id;
+    });
+    this.setState({users});
+}
   onAddUser(user) {
     let {user} = this.state;
     users.push(user);
@@ -69,17 +83,12 @@ class App extends Component {
     // TODO: Get Channels Messages
   }
   setUserName(name) {
-    let{users} = this.state;
-    users.push({id: users.length, name});
-    this.setState({users});
-    // TODO send to server
+    this.socket.emit('user edit', {name});
   }
   addMessage(body) {
-    let {messages, users} = this.state;
-    let createdAt = users.length > 0 ? users[0].name : 'anonymous';
-    messages.push({id: messages.length, body, createdAt, author});
-    this.setState({messages});
-    // TODO: send to server
+    let {activeChannel} = this.state;
+    this.socket.emit('message add',
+        {channelId: activeChannel.id, body});
   }
   render(){
     return (
